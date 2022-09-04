@@ -1,0 +1,26 @@
+How web works?
+client (browser) send request to the server and server sends a response
+for that request. That is rendered by client.
+
+So what if our app response should be dynamic, user centric?
+To tackle that problem we have servlets. Java servlet is a java program,
+which takes inputs from request and process that req and prepares a html file
+and sends that file as response.
+
+It's is like a helper application.
+This servlet resides in a web container. Eg: Tomcat.
+To make our web pages dynamic then we need to install Tomcat server and use
+servlets in application.
+
+Tomcat server:
+1. Contains servlets for various purposes.
+2. Contains a Deployment descriptor web.xml which tells which server to be used for 
+specific requests
+3.  web.xml has 2 tags 
+    a) servlet tag
+    b) servlet mapping tag
+
+servlet creation:
+a. It is a user defined class which extends httpServlet.
+b. response can be in html/ xml /json format goes to client in format of response object.
+c. For servlet mapping we no more need to use xml, we have annotations as  alternative.
