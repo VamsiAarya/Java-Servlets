@@ -1,0 +1,12 @@
+1. We need Apache tomcat server in our local machine to develop and debug
+a web application that uses servlets.
+
+a. Download apache tomcat, it's source file from website.
+b. Now, change perspective from Java to JAVA EE in eclipse ide
+c. Now, you will be able to see server tab, in bottom console view.
+d. If it's not present window > show view > servers
+e. Now, start the server and open chrome. type localhost:8080 and hit enter.
+f. To see the port number double click on the server, new tab showing all the 
+   details will be opened.
+g. Now, you can see a response from server on webpage as status 404.
+h. This responses are the ones we are going to build. 
