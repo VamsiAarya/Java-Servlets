@@ -1,0 +1,123 @@
+Goal :
+Create 2 servlets. 1. To take two numbers as input from form, add them, pass sum value to another servlet.
+                   2. Take sum as input and calculate square of that number and print result to web page.
+
+
+index.html file:
+
+    <!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="ISO-8859-1">
+        <title> Demo app</title>
+        <style>
+            lable, input{
+                margin: 1rem 1rem;
+            }
+            
+            h1, form{
+                margin-left: 15rem;
+            }
+        </style>
+        </head>
+    <body>
+        <h1> Basic form demo</h1>
+        
+        <form action="add" method ="post">
+            <label>Num 1 : </label><br>
+            <input type="text" name="num1"><br>
+            <label>Num 2 : </label><br>
+            <input type="text" name="num2"><br>
+            <input type="submit">
+        </form>
+    </body>
+</html>
+
+
+AddServlet.java:
+
+    package com.demoapp;
+
+    import java.io.IOException;
+
+    import javax.servlet.RequestDispatcher;
+    import javax.servlet.ServletException;
+    import javax.servlet.http.*;
+
+
+    public class AddServlet extends HttpServlet{
+
+    //	This service method is important, as it is a server component we cannot change it's name. 
+    //	service method takes 2 args 1. request object 2. Response object.
+        public void doPost(HttpServletRequest req, HttpServletResponse res) throws IOException, ServletException {
+            
+            int a = Integer.parseInt(req.getParameter("num1"));
+            int b = Integer.parseInt(req.getParameter("num2"));
+            
+            int k = a+b;
+            
+            //to pass sum value we need to create an attribute in req object
+            // frst arg is key and second is value
+            
+            req.setAttribute("k", k);
+
+            //request dispatcher is used to call another servlet from a servlet
+            // we are calling squareServlet from addServlet 
+            // add sq servlet to web.xml file. sq is the url pattern
+
+            RequestDispatcher rd = req.getRequestDispatcher("sq");
+            
+            //sending sum of a,b as argument in req object
+            rd.forward(req, res);
+            
+        }
+    }
+
+
+Square servlet (Sqserv.java):
+
+    package com.demoapp;
+
+    import java.io.IOException;
+
+    import javax.servlet.http.*;
+
+    public class Sqserv extends HttpServlet{
+        
+        public void doPost(HttpServletRequest req, HttpServletResponse res) throws IOException {
+            
+            int k = (int) req.getAttribute("k");
+            
+            k = k*k;
+            
+            res.getWriter().println("Square of sum :"+k);
+            
+        }
+    }
+
+web.xml :
+
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd" id="WebApp_ID" version="4.0">
+ 
+  <servlet>
+  	<servlet-name>abc</servlet-name>
+  	<servlet-class>com.demoapp.AddServlet</servlet-class>
+  </servlet>
+  
+  <servlet-mapping>
+  	<servlet-name>abc</servlet-name>
+  	<url-pattern>/add</url-pattern>
+  </servlet-mapping>
+  
+  <servlet>
+  	<servlet-name>squaringServlet</servlet-name>
+  	<servlet-class>com.demoapp.Sqserv</servlet-class>
+  </servlet>
+  
+  <servlet-mapping>
+  	<servlet-name>squaringServlet</servlet-name>
+  	<url-pattern>/sq</url-pattern>
+  </servlet-mapping>
+  
+</web-app>
