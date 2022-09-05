@@ -1,0 +1,57 @@
+It's easy to maintain 2 servlets like we did in the previous lesson 05, but in reality we have to control
+many servlets. so, to tackle this we have HttpSession. It's taken care by tomcat. Controls data through out a session.
+
+AddServlet.java file:
+
+    package com.demoapp;
+    import java.io.IOException;
+    import javax.servlet.ServletException;
+    import javax.servlet.http.*;
+
+
+    public class AddServlet extends HttpServlet{
+
+        public void doPost(HttpServletRequest req, HttpServletResponse res) throws IOException, ServletException {
+            
+            int a = Integer.parseInt(req.getParameter("num1"));
+            int b = Integer.parseInt(req.getParameter("num2"));
+            
+            int k = a+b;
+            
+            HttpSession session = req.getSession();
+		    session.setAttribute("k", k);
+		    res.sendRedirect("sq3");
+        }
+    }
+
+Sqserv3.java file:
+
+package com.demoapp;
+
+import java.io.IOException;
+
+import javax.servlet.http.*;
+
+public class Sqserv3 extends HttpServlet{
+	
+	public void doGet (HttpServletRequest req, HttpServletResponse res) throws IOException {
+		
+		HttpSession session = req.getSession();
+		
+		int k = (int) session.getAttribute("k");
+		
+		res.getWriter().println("Result k:" + (k*k));
+		
+	}
+}
+
+add below tags to xml file
+ <servlet>
+  	<servlet-name>squaringServlet3</servlet-name>
+  	<servlet-class>com.demoapp.Sqserv3</servlet-class>
+  </servlet>
+  
+  <servlet-mapping>
+  	<servlet-name>squaringServlet3</servlet-name>
+  	<url-pattern>/sq3</url-pattern>
+  </servlet-mapping>
