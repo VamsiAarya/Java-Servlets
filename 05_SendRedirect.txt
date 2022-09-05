@@ -1,0 +1,122 @@
+/* our Website (donate /payement button) servlet -> paypal servlet
+
+Suppose we have a website with donate button. on clicking that button it should call the 
+payment functionlity servlet let's say paypal servlet.
+
+It wll work fine but meanwhile web page doesn't show anything what's happening in the background and browser doesnt know
+from which servlet it is getting response, if we use RequestDispatcher to call the payment servlet.
+
+To tackle this we have sendRedirect() method. This accepts req1 from browser and tells the browser To
+redirect to payment servlet. browser renders that message and calls another servlet with req2 and gets response. */
+
+index.html:
+    <!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="ISO-8859-1">
+        <title> Demo app</title>
+        <style>
+            lable, input{
+                margin: 1rem 1rem;
+            }
+            
+            h1, form{
+                margin-left: 15rem;
+            }
+        </style>
+        </head>
+    <body>
+        <h1> Basic form demo</h1>
+        
+        <form action="add" method ="post">
+            <label>Num 1 : </label><br>
+            <input type="text" name="num1"><br>
+            <label>Num 2 : </label><br>
+            <input type="text" name="num2"><br>
+            <input type="submit">
+        </form>
+    </body>
+</html>
+
+AddServlet.java file:
+
+    package com.demoapp;
+    import java.io.IOException;
+    import javax.servlet.ServletException;
+    import javax.servlet.http.*;
+
+
+    public class AddServlet extends HttpServlet{
+
+        public void doPost(HttpServletRequest req, HttpServletResponse res) throws IOException, ServletException {
+            
+            int a = Integer.parseInt(req.getParameter("num1"));
+            int b = Integer.parseInt(req.getParameter("num2"));
+            
+            int k = a+b;
+            
+            // sending k value as parameter in url 
+            res.sendRedirect("sq2?k="+k);
+        }
+    }
+
+Sqserv2.java file:
+
+    package com.demoapp;
+
+    import java.io.IOException;
+
+    import javax.servlet.http.*;
+
+    public class Sqserv2 extends HttpServlet{
+        
+        public void doGet (HttpServletRequest req, HttpServletResponse res) throws IOException {
+            
+            int k = Integer.parseInt(req.getParameter("k"));
+            
+            k = k*k;
+            
+            res.getWriter().println("Result is :"+k);
+            
+        }
+    }
+
+
+web.xml file:
+
+    <?xml version="1.0" encoding="UTF-8"?>
+    <web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd" id="WebApp_ID" version="4.0">
+    
+    <servlet>
+        <servlet-name>abc</servlet-name>
+        <servlet-class>com.demoapp.AddServlet</servlet-class>
+    </servlet>
+    
+    <servlet-mapping>
+        <servlet-name>abc</servlet-name>
+        <url-pattern>/add</url-pattern>
+    </servlet-mapping>
+    
+    <servlet>
+        <servlet-name>squaringServlet</servlet-name>
+        <servlet-class>com.demoapp.Sqserv</servlet-class>
+    </servlet>
+    
+    <servlet-mapping>
+        <servlet-name>squaringServlet</servlet-name>
+        <url-pattern>/sq1</url-pattern>
+    </servlet-mapping>
+    
+    
+    <servlet>
+        <servlet-name>squaringServlet2</servlet-name>
+        <servlet-class>com.demoapp.Sqserv2</servlet-class>
+    </servlet>
+    
+    <servlet-mapping>
+        <servlet-name>squaringServlet2</servlet-name>
+        <url-pattern>/sq2</url-pattern>
+    </servlet-mapping>
+    </web-app>
+
+
