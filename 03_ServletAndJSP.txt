@@ -1,0 +1,85 @@
+Step 1 : Creating a project
+
+a. Open a new project and select Dynamic web application from the menu
+b. select the checkbox when you see a web.xml file adding to the project in the further steps.
+c. Open web content folder and got to WEB-INF folder. create a html file as index.html
+d. Right click on html file editor, got to Run file as -> Run on server.
+e. Now, this html file will be opened in a browser. Our server is sending the response to the browser.
+
+
+HTML code: index.html
+
+    <!DOCTYPE html>
+    <html>
+        <head>
+            <meta charset="ISO-8859-1">
+            <title> Demo app</title>
+            <style>
+                lable, input{
+                    margin: 1rem 1rem;
+                }
+                
+                h1, form{
+                    margin-left: 15rem;
+                }
+            </style>
+        </head>
+        <body>
+            <h1> Basic form demo</h1>
+            
+            <form action="add">
+                <label>Num 1 : </label><br>
+                <input type="text" name="num1"><br>
+                <label>Num 2 : </label><br>
+                <input type="text" name="num2"><br>
+                <input type="submit">
+            </form>
+        </body>
+    </html>
+
+Java code : create a class called AddServlet.java 
+
+    package com.demoapp;
+    import java.io.IOException;
+    import javax.servlet.http.*;
+
+
+    public class AddServlet extends HttpServlet{
+
+        //	This service method is important, as it is a server component we cannot change it's name. 
+        //	service method takes 2 args 1. request object 2. Response object.
+
+        public void service(HttpServletRequest req, HttpServletResponse res) throws IOException {
+            
+            int a = Integer.parseInt(req.getParameter("num1"));
+            int b = Integer.parseInt(req.getParameter("num2"));
+            
+            int result = a+b;
+            
+            //getWriter writes the result on page.
+            res.getWriter().println("Result = "+result);
+            
+        }
+    }
+
+Change the web.xml file as shown below.
+
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd" id="WebApp_ID" version="4.0">
+ 
+   // 1. No of servlet tags is dependent on how many servlets ur app is having.
+   // 2. Each servlet should have a servlet mapping tag also. It maps the url to the correct servlet.
+   // 3. name of servlet shud be same in servlet and servlet mapping tag.
+   // 4. save and run index.html file.
+  <servlet>
+  	<servlet-name>abc</servlet-name>
+  	<servlet-class>com.demoapp.AddServlet</servlet-class>
+  </servlet>
+  
+  <servlet-mapping>
+  	<servlet-name>abc</servlet-name>
+  	<url-pattern>/add</url-pattern>
+  </servlet-mapping>
+  
+</web-app>
+
