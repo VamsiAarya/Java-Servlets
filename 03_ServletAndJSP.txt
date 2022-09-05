@@ -60,6 +60,23 @@ Java code : create a class called AddServlet.java
             res.getWriter().println("Result = "+result);
             
         }
+
+        // HttpServlet class provides 2 more methods like service. They are 1. doPost 2. doGet
+        // Why do we need these when we have service method.
+        // doPost method accepts only post requests, doGet accepts only get requests.
+        // if we don't specify method attribute in form element of html file then we expose the data in url. It's not a good practice.
+
+        public void doPost(HttpServletRequest req, HttpServletResponse res) throws IOException {
+            
+            int a = Integer.parseInt(req.getParameter("num1"));
+            int b = Integer.parseInt(req.getParameter("num2"));
+            
+            int result = a+b;
+            
+            //getWriter writes the result on page.
+            res.getWriter().println("Result = "+result);
+            
+        }
     }
 
 Change the web.xml file as shown below.
