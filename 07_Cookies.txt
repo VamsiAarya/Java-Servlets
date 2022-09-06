@@ -1,0 +1,59 @@
+a. cookies are like tokens that remember our Request.
+b. For example we went to a shop and asked for an item which costs 50rs but u don't have 50rs exactly
+    so u gave 100rs. Neither did the shop owner has 50rs to give you as balance amount. So, he says wait for 5 mins.
+c. Now after 5 mins u went and asked him , but he forgot. Instead he gave a token on which he wrote 50rs and asked to show when u come back.
+d. This token is called as cookie.
+
+
+AddingServlet.java:
+
+package com.demoapp;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.*;
+
+
+public class AddServlet extends HttpServlet{
+
+	public void doPost(HttpServletRequest req, HttpServletResponse res) throws IOException, ServletException {
+		
+		int a = Integer.parseInt(req.getParameter("num1"));
+		int b = Integer.parseInt(req.getParameter("num2"));
+		
+		int k = a+b;
+		
+		//method 4
+		Cookie cookie = new Cookie("k", k+"");
+
+		// cookie constructor takes 2 args. 1. key  2. value in string
+
+		res.addCookie(cookie);
+		res.sendRedirect("sq4");
+	}
+}
+
+Sqserv4.java:
+
+package com.demoapp;
+
+import java.io.IOException;
+
+import javax.servlet.http.*;
+
+
+public class Sqserv4 extends HttpServlet {
+public void doGet (HttpServletRequest req, HttpServletResponse res) throws IOException {
+		
+		int k  =0;
+		// cookies object will have many cookies that are in form of array
+		Cookie[] cookies = req.getCookies();
+		
+		// iterate over cookies array and find our cookie & store that value in variable
+		for(Cookie c : cookies) {
+			if(c.getName().equals("k")) k = Integer.parseInt(c.getValue());
+		}
+		
+		res.getWriter().println("Res: "+(k*k));
+		
+	}
+}
