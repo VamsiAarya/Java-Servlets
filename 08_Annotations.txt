@@ -1,0 +1,66 @@
+1. web.xml file is the deployment descriptor for tomcat server. Tomcat understands which servlet it should call
+based on xml tags.
+2. But it's a headache to chnage and maitain xml file
+3. To tackle this we have annotations. It's easy 
+4. just add a @WebServlet("/url for servlet") above the servlet 
+
+
+AddServlet2.java:
+
+package com.demoapp;
+
+import java.io.IOException;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.*;
+
+
+@WebServlet("/add")
+public class AddServlet2 extends HttpServlet{
+
+	public void doPost(HttpServletRequest req, HttpServletResponse res) throws IOException, ServletException {
+		
+		int a = Integer.parseInt(req.getParameter("num1"));
+		int b = Integer.parseInt(req.getParameter("num2"));
+		
+		int k = a+b;
+		
+			
+		//method 4
+		Cookie cookie = new Cookie("k", k+"");
+		// cookie constructor takes 2 args. 1. key  2. value in string
+		res.addCookie(cookie);
+		res.sendRedirect("sq4");
+	}
+}
+
+
+Sqserv4.java:
+
+package com.demoapp;
+
+import java.io.IOException;
+
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.*;
+
+@WebServlet("/sq4")
+public class Sqserv4 extends HttpServlet {
+public void doGet (HttpServletRequest req, HttpServletResponse res) throws IOException {
+		
+		int k  =0;
+		// cookies object will have many cookies that are in form of array
+		Cookie[] cookies = req.getCookies();
+		
+		// iterate over cookies array and find our cookie. store that value in variable after finding
+		for(Cookie c : cookies) {
+			if(c.getName().equals("k")) k = Integer.parseInt(c.getValue());
+		}
+		
+		res.getWriter().println("Res: "+(k*k));
+		
+	}
+}
+
+When we hit the url then tomcat automatically redirects to that servlet.
