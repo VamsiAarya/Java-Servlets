@@ -15,7 +15,7 @@ we dont need servlets now.
     java code
 %>
 
-add this tag to the body of the JSP file.
+add this tag to the body of the JSP file. called as scriplet
 
 index.html :
 <!DOCTYPE html>
@@ -68,3 +68,7 @@ add.jsp file :
 	
 </body>
 </html>
+
+a. It's easy to write jsp than servlet but how it's executed ?
+b. This question arises coz, tomcat can only call servlets as it is a servlet container.
+c. But under the hood jsp is also converted to servlet , jsp is like an abstraction for devs to make life easier.
