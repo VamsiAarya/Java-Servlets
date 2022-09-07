@@ -1,0 +1,70 @@
+Why JSP?
+
+While doing printing to web page in previous examples we are not creating a html page we 
+are just sending a string that is rendered as text.
+
+but we need html pages in real life to be rendered by the browser.
+
+To tackle this we have jsp. 
+In jsp we write java code inside html tags. because inverse is not easy to do.
+
+JSP = java server pages.
+we dont need servlets now.
+
+<%
+    java code
+%>
+
+add this tag to the body of the JSP file.
+
+index.html :
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title> Demo app</title>
+<style>
+	lable, input{
+		margin: 1rem 1rem;
+	}
+	
+	h1, form{
+		margin-left: 15rem;
+	}
+</style>
+</head>
+<body>
+	<h1> Basic form demo</h1>
+	
+	<form action="add.jsp" method ="post">
+		<label>Num 1 : </label><br>
+		<input type="text" name="num1"><br>
+		<label>Num 2 : </label><br>
+		<input type="text" name="num2"><br>
+		<input type="submit">
+	</form>
+</body>
+</html>
+
+add.jsp file :
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+    pageEncoding="ISO-8859-1"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Insert title here</title>
+</head>
+<body>
+	
+	<% 
+	    //request is inbuilt object to get the parameter.
+		int a = Integer.parseInt(request.getParameter("num1"));
+		int b = Integer.parseInt(request.getParameter("num2"));	
+		int k = a+b;
+		
+		 response.getWriter().println("Result: "+k); 
+	%>
+	
+</body>
+</html>
